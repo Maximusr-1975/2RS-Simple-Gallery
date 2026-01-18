@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Lightbox - Przykład użycia</title>
+    
+    <!-- Style lightbox -->
+    <link rel="stylesheet" href="simple-lightbox.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #333;
+        }
+        
+        /* Galeria */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.2);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .gallery-item-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            color: white;
+            padding: 15px;
+            font-size: 14px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item:hover .gallery-item-caption {
+            transform: translateY(0);
+        }
+        
+        /* Przykłady różnych użyć */
+        .example-section {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .example-section h2 {
+            margin-bottom: 20px;
+            color: #0066cc;
+        }
+        
+        .code-block {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #0066cc;
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+        
+        .code-block code {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #d63384;
+        }
+        
+        /* Galeria inline */
+        .inline-gallery {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .inline-gallery a {
+            flex: 0 0 auto;
+        }
+        
+        .inline-gallery img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+            transition: opacity 0.3s ease;
+        }
+        
+        .inline-gallery img:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🖼️ Simple Lightbox Gallery</h1>
+        
+        <!-- Przykład 1: Główna galeria -->
+        <div class="example-section">
+            <h2>Przykład 1: Galeria z miniaturkami</h2>
+            <p>Kliknij na dowolny obrazek aby go powiększyć. Użyj strzałek lub przycisków do nawigacji.</p>
+            
+            <div class="gallery">
+                <a href="https://picsum.photos/1200/800?random=1" 
+                   data-lightbox="gallery1" 
+                   data-caption="Piękny krajobraz górski - zdjęcie 1"
+                   class="gallery-item">
+                    <img src="https://picsum.photos/300/250?random=1" alt="Obrazek 1">
+                    <div class="gallery-item-caption">Krajobraz 1</div>
+                </a>
+                
+                <a href="https://picsum.photos/1200/800?random=2" 
+                   data-lightbox="gallery1" 
+                   data-caption="Architektura nowoczesna - zdjęcie 2"
+                   class="gallery-item">
+                    <img src="https://picsum.photos/300/250?random=2" alt="Obrazek 2">
+                    <div class="gallery-item-caption">Architektura 1</div>
+                </a>
+                
+                <a href="https://picsum.photos/1200/800?random=3" 
+                   data-lightbox="gallery1" 
+                   data-caption="Przyroda w pełnej krasie - zdjęcie 3"
+                   class="gallery-item">
+                    <img src="https://picsum.photos/300/250?random=3" alt="Obrazek 3">
+                    <div class="gallery-item-caption">Przyroda 1</div>
+                </a>
+                
+                <a href="https://picsum.photos/1200/800?random=4" 
+                   data-lightbox="gallery1" 
+                   data-caption="Miasto w nocy - zdjęcie 4"
+                   class="gallery-item">
+                    <img src="https://picsum.photos/300/250?random=4" alt="Obrazek 4">
+                    <div class="gallery-item-caption">Miasto 1</div>
+                </a>
+                
+                <a href="https://picsum.photos/1200/800?random=5" 
+                   data-lightbox="gallery1" 
+                   data-caption="Plaża o zachodzie słońca - zdjęcie 5"
+                   class="gallery-item">
+                    <img src="https://picsum.photos/300/250?random=5" alt="Obrazek 5">
+                    <div class="gallery-item-caption">Plaża 1</div>
+                </a>
+                
+                <a href="https://picsum.photos/1200/800?random=6" 
+                   data-lightbox="gallery1" 
+                   data-caption="Las w jesiennych barwach - zdjęcie 6"
+                   class="gallery-item">
+                    <img src="https://picsum.photos/300/250?random=6" alt="Obrazek 6">
+                    <div class="gallery-item-caption">Las 1</div>
+                </a>
+            </div>
+            
+            <div class="code-block">
+                <code>
+&lt;a href="pelny-rozmiar.jpg" data-lightbox="gallery1" data-caption="Opis obrazka"&gt;<br>
+&nbsp;&nbsp;&lt;img src="miniaturka.jpg" alt="Opis"&gt;<br>
+&lt;/a&gt;
+                </code>
+            </div>
+        </div>
+        
+        <!-- Przykład 2: Galeria inline -->
+        <div class="example-section">
+            <h2>Przykład 2: Galeria inline (w tekście)</h2>
+            <p>Galeria może być osadzona bezpośrednio w treści artykułu.</p>
+            
+            <div class="inline-gallery">
+                <a href="https://picsum.photos/1200/800?random=7" 
+                   data-lightbox="gallery2" 
+                   data-caption="Obrazek inline 1">
+                    <img src="https://picsum.photos/150/150?random=7" alt="Inline 1">
+                </a>
+                
+                <a href="https://picsum.photos/1200/800?random=8" 
+                   data-lightbox="gallery2" 
+                   data-caption="Obrazek inline 2">
+                    <img src="https://picsum.photos/150/150?random=8" alt="Inline 2">
+                </a>
+                
+                <a href="https://picsum.photos/1200/800?random=9" 
+                   data-lightbox="gallery2" 
+                   data-caption="Obrazek inline 3">
+                    <img src="https://picsum.photos/150/150?random=9" alt="Inline 3">
+                </a>
+                
+                <a href="https://picsum.photos/1200/800?random=10" 
+                   data-lightbox="gallery2" 
+                   data-caption="Obrazek inline 4">
+                    <img src="https://picsum.photos/150/150?random=10" alt="Inline 4">
+                </a>
+            </div>
+        </div>
+        
+        <!-- Instrukcja użycia -->
+        <div class="example-section">
+            <h2>📝 Jak używać?</h2>
+            
+            <h3>1. Dodaj pliki do projektu:</h3>
+            <div class="code-block">
+                <code>
+&lt;link rel="stylesheet" href="simple-lightbox.css"&gt;<br>
+&lt;script src="simple-lightbox.js"&gt;&lt;/script&gt;
+                </code>
+            </div>
+            
+            <h3 style="margin-top: 20px;">2. Dodaj atrybut data-lightbox do linków:</h3>
+            <div class="code-block">
+                <code>
+&lt;a href="duzy-obrazek.jpg" data-lightbox="nazwa-galerii" data-caption="Opcjonalny opis"&gt;<br>
+&nbsp;&nbsp;&lt;img src="miniaturka.jpg" alt="Opis"&gt;<br>
+&lt;/a&gt;
+                </code>
+            </div>
+            
+            <h3 style="margin-top: 20px;">3. Opcjonalna inicjalizacja z parametrami:</h3>
+            <div class="code-block">
+                <code>
+&lt;script&gt;<br>
+&nbsp;&nbsp;// Automatyczna inicjalizacja (domyślnie)<br>
+&nbsp;&nbsp;// lub z własnymi opcjami:<br>
+&nbsp;&nbsp;const lightbox = new SimpleLightbox('[data-lightbox]', {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;closeOnBackdrop: true,&nbsp;&nbsp;// Zamknij klikając poza obrazkiem<br>
+&nbsp;&nbsp;&nbsp;&nbsp;showCaption: true,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Pokaż podpisy<br>
+&nbsp;&nbsp;&nbsp;&nbsp;showCounter: true,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Pokaż licznik (1/10)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;keyboardNav: true,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Nawigacja klawiaturą<br>
+&nbsp;&nbsp;&nbsp;&nbsp;animation: 'fade'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// fade / zoom / slide<br>
+&nbsp;&nbsp;});<br>
+&lt;/script&gt;
+                </code>
+            </div>
+            
+            <h3 style="margin-top: 20px;">4. Funkcje:</h3>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>✅ Automatyczna inicjalizacja dla elementów z <code>data-lightbox</code></li>
+                <li>✅ Nawigacja strzałkami ← →</li>
+                <li>✅ Zamykanie klawiszem ESC</li>
+                <li>✅ Zamykanie kliknięciem poza obrazkiem</li>
+                <li>✅ Obsługa gestów swipe na urządzeniach mobilnych</li>
+                <li>✅ Responsywność - działa na wszystkich urządzeniach</li>
+                <li>✅ Podpisy obrazków</li>
+                <li>✅ Licznik obrazków (1/10)</li>
+                <li>✅ Loader podczas ładowania</li>
+                <li>✅ Płynne animacje</li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- JavaScript lightbox -->
+    <script src="simple-lightbox.js"></script>
+    
+    <!-- Opcjonalna konfiguracja -->
+    <script>
+        // Galeria jest automatycznie zainicjalizowana
+        // Możesz dostosować ustawienia:
+        
+        /*
+        const myLightbox = new SimpleLightbox('[data-lightbox]', {
+            closeOnBackdrop: true,
+            showCaption: true,
+            showCounter: true,
+            keyboardNav: true,
+            animation: 'fade'
+        });
+        */
+    </script>
+</body>
+</html>
