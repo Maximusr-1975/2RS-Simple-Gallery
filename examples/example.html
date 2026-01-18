@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Lightbox - Przykład użycia</title>
+    <title>Simple Lightbox - Images & PDF Gallery</title>
     
-    <!-- Style lightbox -->
-    <link rel="stylesheet" href="simple-lightbox.css">
+    <!-- Lightbox styles -->
+    <link rel="stylesheet" href="2RS_Simple_Gallery.css">
     
     <style>
         * {
@@ -32,7 +32,7 @@
             color: #333;
         }
         
-        /* Galeria */
+        /* Gallery */
         .gallery {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -47,6 +47,7 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             cursor: pointer;
+            background: white;
         }
         
         .gallery-item:hover {
@@ -59,6 +60,29 @@
             height: 250px;
             object-fit: cover;
             display: block;
+        }
+        
+        .gallery-item.pdf-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            height: 250px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .gallery-item.pdf-item i {
+            font-size: 64px;
+            color: white;
+            margin-bottom: 15px;
+        }
+        
+        .gallery-item.pdf-item .pdf-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            padding: 0 20px;
         }
         
         .gallery-item-caption {
@@ -78,8 +102,7 @@
             transform: translateY(0);
         }
         
-        /* Przykłady różnych użyć */
-        .example-section {
+        .section {
             background: white;
             padding: 30px;
             border-radius: 8px;
@@ -87,7 +110,7 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         
-        .example-section h2 {
+        .section h2 {
             margin-bottom: 20px;
             color: #0066cc;
         }
@@ -107,201 +130,196 @@
             color: #d63384;
         }
         
-        /* Galeria inline */
-        .inline-gallery {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 5px;
         }
         
-        .inline-gallery a {
-            flex: 0 0 auto;
+        .badge-new {
+            background: #28a745;
+            color: white;
         }
         
-        .inline-gallery img {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 5px;
-            transition: opacity 0.3s ease;
-        }
-        
-        .inline-gallery img:hover {
-            opacity: 0.8;
+        .badge-pdf {
+            background: #dc3545;
+            color: white;
         }
     </style>
+    
+    <!-- Font Awesome for PDF icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <h1>🖼️ Simple Lightbox Gallery</h1>
+        <h1>🖼️ Simple Lightbox - Images & PDF Gallery</h1>
         
-        <!-- Przykład 1: Główna galeria -->
-        <div class="example-section">
-            <h2>Przykład 1: Galeria z miniaturkami</h2>
-            <p>Kliknij na dowolny obrazek aby go powiększyć. Użyj strzałek lub przycisków do nawigacji.</p>
+        <!-- Example 1: Mixed Gallery -->
+        <div class="section">
+            <h2>Mixed Gallery - Images & PDF Documents <span class="badge badge-new">NEW</span></h2>
+            <p>Click on any image or PDF document to view it in fullscreen. Use arrow keys or buttons to navigate.</p>
             
             <div class="gallery">
+                <!-- Images -->
                 <a href="https://picsum.photos/1200/800?random=1" 
-                   data-lightbox="gallery1" 
-                   data-caption="Piękny krajobraz górski - zdjęcie 1"
+                   data-lightbox="mixed" 
+                   data-caption="Beautiful mountain landscape"
                    class="gallery-item">
-                    <img src="https://picsum.photos/300/250?random=1" alt="Obrazek 1">
-                    <div class="gallery-item-caption">Krajobraz 1</div>
+                    <img src="https://picsum.photos/300/250?random=1" alt="Image 1">
+                    <div class="gallery-item-caption">Landscape 1</div>
+                </a>
+                
+                <!-- PDF Example -->
+                <a href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" 
+                   data-lightbox="mixed" 
+                   data-type="pdf"
+                   data-caption="Sample PDF Document - Technical Specifications"
+                   class="gallery-item pdf-item">
+                    <i class="fas fa-file-pdf"></i>
+                    <div class="pdf-title">Technical Specs.pdf</div>
                 </a>
                 
                 <a href="https://picsum.photos/1200/800?random=2" 
-                   data-lightbox="gallery1" 
-                   data-caption="Architektura nowoczesna - zdjęcie 2"
+                   data-lightbox="mixed" 
+                   data-caption="Modern architecture design"
                    class="gallery-item">
-                    <img src="https://picsum.photos/300/250?random=2" alt="Obrazek 2">
-                    <div class="gallery-item-caption">Architektura 1</div>
+                    <img src="https://picsum.photos/300/250?random=2" alt="Image 2">
+                    <div class="gallery-item-caption">Architecture 1</div>
+                </a>
+                
+                <!-- PDF Example 2 -->
+                <a href="https://www.africau.edu/images/default/sample.pdf" 
+                   data-lightbox="mixed" 
+                   data-type="pdf"
+                   data-caption="Product Brochure - Complete Guide"
+                   class="gallery-item pdf-item">
+                    <i class="fas fa-file-pdf"></i>
+                    <div class="pdf-title">Product Brochure.pdf</div>
                 </a>
                 
                 <a href="https://picsum.photos/1200/800?random=3" 
-                   data-lightbox="gallery1" 
-                   data-caption="Przyroda w pełnej krasie - zdjęcie 3"
+                   data-lightbox="mixed" 
+                   data-caption="Nature in its full glory"
                    class="gallery-item">
-                    <img src="https://picsum.photos/300/250?random=3" alt="Obrazek 3">
-                    <div class="gallery-item-caption">Przyroda 1</div>
+                    <img src="https://picsum.photos/300/250?random=3" alt="Image 3">
+                    <div class="gallery-item-caption">Nature 1</div>
                 </a>
                 
                 <a href="https://picsum.photos/1200/800?random=4" 
-                   data-lightbox="gallery1" 
-                   data-caption="Miasto w nocy - zdjęcie 4"
+                   data-lightbox="mixed" 
+                   data-caption="City at night"
                    class="gallery-item">
-                    <img src="https://picsum.photos/300/250?random=4" alt="Obrazek 4">
-                    <div class="gallery-item-caption">Miasto 1</div>
-                </a>
-                
-                <a href="https://picsum.photos/1200/800?random=5" 
-                   data-lightbox="gallery1" 
-                   data-caption="Plaża o zachodzie słońca - zdjęcie 5"
-                   class="gallery-item">
-                    <img src="https://picsum.photos/300/250?random=5" alt="Obrazek 5">
-                    <div class="gallery-item-caption">Plaża 1</div>
-                </a>
-                
-                <a href="https://picsum.photos/1200/800?random=6" 
-                   data-lightbox="gallery1" 
-                   data-caption="Las w jesiennych barwach - zdjęcie 6"
-                   class="gallery-item">
-                    <img src="https://picsum.photos/300/250?random=6" alt="Obrazek 6">
-                    <div class="gallery-item-caption">Las 1</div>
+                    <img src="https://picsum.photos/300/250?random=4" alt="Image 4">
+                    <div class="gallery-item-caption">City 1</div>
                 </a>
             </div>
             
             <div class="code-block">
                 <code>
-&lt;a href="pelny-rozmiar.jpg" data-lightbox="gallery1" data-caption="Opis obrazka"&gt;<br>
-&nbsp;&nbsp;&lt;img src="miniaturka.jpg" alt="Opis"&gt;<br>
+&lt;!-- Image --&gt;<br>
+&lt;a href="full-image.jpg" data-lightbox="gallery" data-caption="Description"&gt;<br>
+&nbsp;&nbsp;&lt;img src="thumbnail.jpg" alt="Description"&gt;<br>
+&lt;/a&gt;<br><br>
+&lt;!-- PDF Document --&gt;<br>
+&lt;a href="document.pdf" data-lightbox="gallery" data-type="pdf" data-caption="PDF Title"&gt;<br>
+&nbsp;&nbsp;&lt;i class="fas fa-file-pdf"&gt;&lt;/i&gt; View PDF<br>
 &lt;/a&gt;
                 </code>
             </div>
         </div>
         
-        <!-- Przykład 2: Galeria inline -->
-        <div class="example-section">
-            <h2>Przykład 2: Galeria inline (w tekście)</h2>
-            <p>Galeria może być osadzona bezpośrednio w treści artykułu.</p>
+        <!-- Example 2: Product Gallery for 2R Systems -->
+        <div class="section">
+            <h2>Example: 2R Systems Product Gallery</h2>
             
-            <div class="inline-gallery">
-                <a href="https://picsum.photos/1200/800?random=7" 
-                   data-lightbox="gallery2" 
-                   data-caption="Obrazek inline 1">
-                    <img src="https://picsum.photos/150/150?random=7" alt="Inline 1">
-                </a>
-                
-                <a href="https://picsum.photos/1200/800?random=8" 
-                   data-lightbox="gallery2" 
-                   data-caption="Obrazek inline 2">
-                    <img src="https://picsum.photos/150/150?random=8" alt="Inline 2">
-                </a>
-                
-                <a href="https://picsum.photos/1200/800?random=9" 
-                   data-lightbox="gallery2" 
-                   data-caption="Obrazek inline 3">
-                    <img src="https://picsum.photos/150/150?random=9" alt="Inline 3">
-                </a>
-                
+            <div class="gallery">
                 <a href="https://picsum.photos/1200/800?random=10" 
-                   data-lightbox="gallery2" 
-                   data-caption="Obrazek inline 4">
-                    <img src="https://picsum.photos/150/150?random=10" alt="Inline 4">
+                   data-lightbox="products" 
+                   data-caption="SlimLine 68 - Ultra-slim aluminium profiles with exceptional thermal performance"
+                   class="gallery-item">
+                    <img src="https://picsum.photos/300/250?random=10" alt="SlimLine 68">
+                    <div class="gallery-item-caption">SlimLine 68</div>
+                </a>
+                
+                <!-- PDF Brochure -->
+                <a href="https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" 
+                   data-lightbox="products" 
+                   data-type="pdf"
+                   data-caption="SlimLine 68 Technical Brochure - Complete specifications and installation guide"
+                   class="gallery-item pdf-item">
+                    <i class="fas fa-file-pdf"></i>
+                    <div class="pdf-title">SL68 Brochure.pdf</div>
+                </a>
+                
+                <a href="https://picsum.photos/1200/800?random=11" 
+                   data-lightbox="products" 
+                   data-caption="MasterLine 8 - Premium window system combining best-in-class performance"
+                   class="gallery-item">
+                    <img src="https://picsum.photos/300/250?random=11" alt="MasterLine 8">
+                    <div class="gallery-item-caption">MasterLine 8</div>
+                </a>
+                
+                <a href="https://picsum.photos/1200/800?random=12" 
+                   data-lightbox="products" 
+                   data-caption="MasterLine 8 Doors - Flagship aluminium door system with exceptional performance"
+                   class="gallery-item">
+                    <img src="https://picsum.photos/300/250?random=12" alt="MasterLine 8 Door">
+                    <div class="gallery-item-caption">ML8 Doors</div>
                 </a>
             </div>
         </div>
         
-        <!-- Instrukcja użycia -->
-        <div class="example-section">
-            <h2>📝 Jak używać?</h2>
+        <!-- Instructions -->
+        <div class="section">
+            <h2>📝 How to Use?</h2>
             
-            <h3>1. Dodaj pliki do projektu:</h3>
+            <h3>1. Add files to your project:</h3>
             <div class="code-block">
                 <code>
-&lt;link rel="stylesheet" href="simple-lightbox.css"&gt;<br>
-&lt;script src="simple-lightbox.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="2RS_Simple_Gallery.css"&gt;<br>
+&lt;script src="2RS_Simple_Gallery.js"&gt;&lt;/script&gt;
                 </code>
             </div>
             
-            <h3 style="margin-top: 20px;">2. Dodaj atrybut data-lightbox do linków:</h3>
+            <h3 style="margin-top: 20px;">2. For Images:</h3>
             <div class="code-block">
                 <code>
-&lt;a href="duzy-obrazek.jpg" data-lightbox="nazwa-galerii" data-caption="Opcjonalny opis"&gt;<br>
-&nbsp;&nbsp;&lt;img src="miniaturka.jpg" alt="Opis"&gt;<br>
+&lt;a href="large-image.jpg" data-lightbox="gallery-name" data-caption="Optional description"&gt;<br>
+&nbsp;&nbsp;&lt;img src="thumbnail.jpg" alt="Description"&gt;<br>
 &lt;/a&gt;
                 </code>
             </div>
             
-            <h3 style="margin-top: 20px;">3. Opcjonalna inicjalizacja z parametrami:</h3>
+            <h3 style="margin-top: 20px;">3. For PDF Documents <span class="badge badge-pdf">NEW</span>:</h3>
             <div class="code-block">
                 <code>
-&lt;script&gt;<br>
-&nbsp;&nbsp;// Automatyczna inicjalizacja (domyślnie)<br>
-&nbsp;&nbsp;// lub z własnymi opcjami:<br>
-&nbsp;&nbsp;const lightbox = new SimpleLightbox('[data-lightbox]', {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;closeOnBackdrop: true,&nbsp;&nbsp;// Zamknij klikając poza obrazkiem<br>
-&nbsp;&nbsp;&nbsp;&nbsp;showCaption: true,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Pokaż podpisy<br>
-&nbsp;&nbsp;&nbsp;&nbsp;showCounter: true,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Pokaż licznik (1/10)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;keyboardNav: true,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// Nawigacja klawiaturą<br>
-&nbsp;&nbsp;&nbsp;&nbsp;animation: 'fade'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// fade / zoom / slide<br>
-&nbsp;&nbsp;});<br>
-&lt;/script&gt;
+&lt;a href="document.pdf" data-lightbox="gallery-name" data-type="pdf" data-caption="PDF Title"&gt;<br>
+&nbsp;&nbsp;&lt;i class="fas fa-file-pdf"&gt;&lt;/i&gt; View Brochure<br>
+&lt;/a&gt;
                 </code>
             </div>
             
-            <h3 style="margin-top: 20px;">4. Funkcje:</h3>
+            <h3 style="margin-top: 20px;">4. Features:</h3>
             <ul style="margin-left: 20px; margin-top: 10px;">
-                <li>✅ Automatyczna inicjalizacja dla elementów z <code>data-lightbox</code></li>
-                <li>✅ Nawigacja strzałkami ← →</li>
-                <li>✅ Zamykanie klawiszem ESC</li>
-                <li>✅ Zamykanie kliknięciem poza obrazkiem</li>
-                <li>✅ Obsługa gestów swipe na urządzeniach mobilnych</li>
-                <li>✅ Responsywność - działa na wszystkich urządzeniach</li>
-                <li>✅ Podpisy obrazków</li>
-                <li>✅ Licznik obrazków (1/10)</li>
-                <li>✅ Loader podczas ładowania</li>
-                <li>✅ Płynne animacje</li>
+                <li>✅ Auto-initialization for elements with <code>data-lightbox</code></li>
+                <li>✅ Navigation with arrow keys ← →</li>
+                <li>✅ Close with ESC key</li>
+                <li>✅ Close by clicking outside</li>
+                <li>✅ Swipe gestures on mobile devices</li>
+                <li>✅ Fully responsive - works on all devices</li>
+                <li>✅ Image captions</li>
+                <li>✅ Counter display (1/10)</li>
+                <li>✅ Loading animation</li>
+                <li>✅ Smooth transitions</li>
+                <li>✅ <strong>PDF document preview</strong> <span class="badge badge-new">NEW</span></li>
             </ul>
         </div>
     </div>
     
-    <!-- JavaScript lightbox -->
-    <script src="simple-lightbox.js"></script>
-    
-    <!-- Opcjonalna konfiguracja -->
-    <script>
-        // Galeria jest automatycznie zainicjalizowana
-        // Możesz dostosować ustawienia:
-        
-        /*
-        const myLightbox = new SimpleLightbox('[data-lightbox]', {
-            closeOnBackdrop: true,
-            showCaption: true,
-            showCounter: true,
-            keyboardNav: true,
-            animation: 'fade'
-        });
-        */
-    </script>
+    <!-- Lightbox JavaScript -->
+    <script src="2RS_Simple_Gallery.js"></script>
 </body>
 </html>

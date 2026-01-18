@@ -3,8 +3,8 @@
 ## 📄 Files Included
 
 ### Core Files (Required)
-1. **simple-lightbox.js** - Main JavaScript (~10KB)
-2. **simple-lightbox.css** - Styles (~3KB)
+1. **2RS_Simple_Gallery.js** - Main JavaScript (~10KB)
+2. **2RS_Simple_Gallery.css** - Styles (~3KB)
 
 ### Documentation (English)
 3. **README.md** - Complete documentation (English)
@@ -28,13 +28,13 @@
 ## 🚀 Quick Start
 
 ### 1. Copy these 2 files to your project:
-- `simple-lightbox.js` → `assets/js/`
-- `simple-lightbox.css` → `assets/css/`
+- `2RS_Simple_Gallery.js` → `assets/js/`
+- `2RS_Simple_Gallery.css` → `assets/css/`
 
 ### 2. Add to HTML:
 ```html
-<link rel="stylesheet" href="assets/css/simple-lightbox.css">
-<script src="assets/js/simple-lightbox.js"></script>
+<link rel="stylesheet" href="assets/css/2RS_Simple_Gallery.css">
+<script src="assets/js/2RS_Simple_Gallery.js"></script>
 ```
 
 ### 3. Use on images:
@@ -125,7 +125,7 @@ document.querySelectorAll('.pdf-trigger').forEach(function(button) {
 ## 💾 Installation Methods
 
 ### Method 1: Manual (Recommended)
-1. Copy `simple-lightbox.js` and `simple-lightbox.css`
+1. Copy `2RS_Simple_Gallery.js` and `2RS_Simple_Gallery.css`
 2. Add to your HTML
 3. Replace `data-fancybox` with `data-lightbox`
 

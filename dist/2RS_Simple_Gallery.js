@@ -1,6 +1,11 @@
 /**
- * Simple Lightbox Gallery
- * Lekka alternatywa dla Fancybox - bez zewnętrznych zależności
+ * 2RS Simple Gallery
+ * Lightweight Fancybox alternative - no external dependencies
+ * Supports images and PDF documents
+ * 
+ * @author 2R Systems Ltd
+ * @version 1.0
+ * @license MIT
  */
 
 class SimpleLightbox {
@@ -9,7 +14,7 @@ class SimpleLightbox {
         this.images = [];
         this.currentIndex = 0;
         
-        // Opcje domyślne
+        // Default options
         this.options = {
             closeOnBackdrop: true,
             showCaption: true,
@@ -24,18 +29,18 @@ class SimpleLightbox {
     }
     
     init() {
-        // Tworzenie struktury lightbox
+        // Create lightbox structure
         this.createLightbox();
         
-        // Zbieranie wszystkich obrazków
+        // Collect all images and PDFs
         this.collectImages();
         
-        // Dodawanie event listenerów
+        // Attach event listeners
         this.attachEvents();
     }
     
     createLightbox() {
-        // Główny overlay
+        // Main overlay
         this.overlay = document.createElement('div');
         this.overlay.className = 'simple-lightbox-overlay';
         this.overlay.innerHTML = `
@@ -57,7 +62,7 @@ class SimpleLightbox {
         
         document.body.appendChild(this.overlay);
         
-        // Referencje do elementów
+        // Element references
         this.container = this.overlay.querySelector('.simple-lightbox-container');
         this.image = this.overlay.querySelector('.simple-lightbox-image');
         this.iframe = this.overlay.querySelector('.simple-lightbox-iframe');
@@ -85,7 +90,7 @@ class SimpleLightbox {
             
             this.images.push(img);
             
-            // Event listener na kliknięcie
+            // Click event listener
             el.addEventListener('click', (e) => {
                 e.preventDefault();
                 this.open(index);
@@ -101,9 +106,14 @@ class SimpleLightbox {
     }
     
     attachEvents() {
-        // Zamykanie
+        // Close button
         this.closeBtn.addEventListener('click', () => this.close());
         
+        // Navigation buttons
+        this.prevBtn.addEventListener('click', () => this.prev());
+        this.nextBtn.addEventListener('click', () => this.next());
+        
+        // Click outside to close
         if (this.options.closeOnBackdrop) {
             this.overlay.addEventListener('click', (e) => {
                 if (e.target === this.overlay) {
@@ -112,11 +122,7 @@ class SimpleLightbox {
             });
         }
         
-        // Nawigacja
-        this.prevBtn.addEventListener('click', () => this.prev());
-        this.nextBtn.addEventListener('click', () => this.next());
-        
-        // Klawiatura
+        // Keyboard navigation
         if (this.options.keyboardNav) {
             document.addEventListener('keydown', (e) => {
                 if (!this.overlay.classList.contains('active')) return;
@@ -135,11 +141,7 @@ class SimpleLightbox {
             });
         }
         
-        // Touch swipe (opcjonalnie)
-        this.addSwipeSupport();
-    }
-    
-    addSwipeSupport() {
+        // Touch swipe support
         let touchStartX = 0;
         let touchEndX = 0;
         
@@ -149,29 +151,26 @@ class SimpleLightbox {
         
         this.container.addEventListener('touchend', (e) => {
             touchEndX = e.changedTouches[0].screenX;
-            this.handleSwipe(touchStartX, touchEndX);
+            this.handleSwipe();
         });
-    }
-    
-    handleSwipe(startX, endX) {
-        const diff = startX - endX;
-        const threshold = 50;
         
-        if (Math.abs(diff) > threshold) {
-            if (diff > 0) {
-                this.next(); // Swipe left
-            } else {
-                this.prev(); // Swipe right
-            }
-        }
+        const handleSwipe = () => {
+            if (touchEndX < touchStartX - 50) this.next();
+            if (touchEndX > touchStartX + 50) this.prev();
+        };
+        
+        this.handleSwipe = handleSwipe;
     }
     
-    open(index) {
+    open(index = 0) {
         this.currentIndex = index;
         this.overlay.classList.add('active');
         document.body.style.overflow = 'hidden';
         
-        this.loadImage(this.images[index]);
+        // Set animation class
+        this.container.setAttribute('data-animation', this.options.animation);
+        
+        this.loadImage(this.images[this.currentIndex]);
         this.updateNavigation();
     }
     
@@ -179,7 +178,7 @@ class SimpleLightbox {
         this.overlay.classList.remove('active');
         document.body.style.overflow = '';
         
-        // Reset obrazka i iframe po animacji
+        // Reset image and iframe after animation
         setTimeout(() => {
             this.image.src = '';
             this.image.style.display = 'none';
@@ -190,41 +189,37 @@ class SimpleLightbox {
     }
     
     prev() {
-        if (this.currentIndex > 0) {
-            this.currentIndex--;
-            this.loadImage(this.images[this.currentIndex]);
-            this.updateNavigation();
-        }
+        this.currentIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
+        this.loadImage(this.images[this.currentIndex]);
+        this.updateNavigation();
     }
     
     next() {
-        if (this.currentIndex < this.images.length - 1) {
-            this.currentIndex++;
-            this.loadImage(this.images[this.currentIndex]);
-            this.updateNavigation();
-        }
+        this.currentIndex = (this.currentIndex + 1) % this.images.length;
+        this.loadImage(this.images[this.currentIndex]);
+        this.updateNavigation();
     }
     
     loadImage(imageData) {
-        // Pokazanie loadera
+        // Show loader
         this.loader.classList.add('active');
         this.image.style.opacity = '0';
         this.iframe.style.opacity = '0';
         
         if (imageData.type === 'pdf') {
-            // Ładowanie PDF w iframe
+            // Load PDF in iframe
             this.image.style.display = 'none';
             this.iframe.style.display = 'block';
             this.iframe.src = imageData.src;
             
-            // Symulacja załadowania (iframe nie ma onload dla PDF)
+            // Simulate loading (iframe doesn't have onload for PDF)
             setTimeout(() => {
                 this.loader.classList.remove('active');
                 this.iframe.style.opacity = '1';
                 this.updateCaptionAndCounter(imageData);
             }, 500);
         } else {
-            // Ładowanie obrazka
+            // Load image
             this.iframe.style.display = 'none';
             this.image.style.display = 'block';
             
@@ -234,7 +229,7 @@ class SimpleLightbox {
                 this.image.src = imageData.src;
                 this.image.alt = imageData.caption;
                 
-                // Ukrycie loadera
+                // Hide loader
                 setTimeout(() => {
                     this.loader.classList.remove('active');
                     this.image.style.opacity = '1';
@@ -253,7 +248,7 @@ class SimpleLightbox {
     }
     
     updateCaptionAndCounter(imageData) {
-        // Aktualizacja caption i counter
+        // Update caption and counter
         if (this.options.showCaption && imageData.caption) {
             this.caption.textContent = imageData.caption;
             this.caption.style.display = 'block';
@@ -268,22 +263,29 @@ class SimpleLightbox {
     }
     
     updateNavigation() {
-        // Ukrywanie przycisków na końcach galerii
-        this.prevBtn.style.display = this.currentIndex === 0 ? 'none' : 'block';
-        this.nextBtn.style.display = this.currentIndex === this.images.length - 1 ? 'none' : 'block';
+        // Show/hide navigation buttons
+        this.prevBtn.style.display = this.images.length > 1 ? 'flex' : 'none';
+        this.nextBtn.style.display = this.images.length > 1 ? 'flex' : 'none';
     }
     
-    // Publiczne metody
     destroy() {
-        this.overlay.remove();
-        document.body.style.overflow = '';
+        // Remove lightbox from DOM
+        if (this.overlay) {
+            this.overlay.remove();
+        }
+        
+        // Remove event listeners from images
+        this.images.forEach(img => {
+            if (img.element) {
+                img.element.replaceWith(img.element.cloneNode(true));
+            }
+        });
     }
 }
 
-// Auto-inicjalizacja
-document.addEventListener('DOMContentLoaded', () => {
-    // Automatycznie inicjalizuj dla elementów z data-lightbox
+// Auto-initialization
+document.addEventListener('DOMContentLoaded', function() {
     if (document.querySelector('[data-lightbox]')) {
-        window.lightbox = new SimpleLightbox('[data-lightbox]');
+        new SimpleLightbox('[data-lightbox]');
     }
 });

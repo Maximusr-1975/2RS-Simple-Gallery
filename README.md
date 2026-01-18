@@ -21,18 +21,18 @@ A lightweight, dependency-free JavaScript gallery for images and PDF documents -
 ### 1. Download files
 
 ```
-simple-lightbox.js
-simple-lightbox.css
+2RS_Simple_Gallery.js
+2RS_Simple_Gallery.css
 ```
 
 ### 2. Add to your project
 
 ```html
 <!-- In <head> -->
-<link rel="stylesheet" href="assets/css/simple-lightbox.css">
+<link rel="stylesheet" href="assets/css/2RS_Simple_Gallery.css">
 
 <!-- Before </body> -->
-<script src="assets/js/simple-lightbox.js"></script>
+<script src="assets/js/2RS_Simple_Gallery.js"></script>
 ```
 
 ### 3. Add attributes to links
@@ -107,10 +107,10 @@ const lightbox = new SimpleLightbox('[data-lightbox]', {
 ### Method 1: Import files
 
 1. **Design → Custom Code → CSS Files**
-   - Import: `simple-lightbox.css`
+   - Import: `2RS_Simple_Gallery.css`
 
 2. **Design → Custom Code → JavaScript Files**
-   - Import: `simple-lightbox.js`
+   - Import: `2RS_Simple_Gallery.js`
 
 ### Method 2: Replace Fancybox
 
@@ -234,8 +234,8 @@ Fancybox.show([{
     <img src="thumb.jpg">
 </a>
 
-<link rel="stylesheet" href="simple-lightbox.css">
-<script src="simple-lightbox.js"></script>
+<link rel="stylesheet" href="2RS_Simple_Gallery.css">
+<script src="2RS_Simple_Gallery.js"></script>
 
 <!-- Auto-initialization - no additional code needed -->
 ```

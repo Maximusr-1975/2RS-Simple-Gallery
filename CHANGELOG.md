@@ -58,8 +58,8 @@ Perfect for product pages with technical brochures:
 
 ## Files Included
 
-1. **simple-lightbox.js** - Updated with PDF support
-2. **simple-lightbox.css** - Styles for PDF iframe
+1. **2RS_Simple_Gallery.js** - Updated with PDF support
+2. **2RS_Simple_Gallery.css** - Styles for PDF iframe
 3. **example-english-pdf.html** - Full demo with images & PDF
 4. **bootstrap-integration-english-pdf.html** - Bootstrap examples
 5. **README.md** - Complete documentation (Polish)

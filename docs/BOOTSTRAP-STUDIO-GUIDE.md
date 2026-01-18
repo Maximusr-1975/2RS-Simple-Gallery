@@ -1,157 +1,113 @@
-# 🚀 Szybki Start - Bootstrap Studio
+# 📘 Bootstrap Studio Integration Guide
 
-## Instalacja Simple Lightbox w Bootstrap Studio
+Complete guide for integrating 2RS Simple Gallery into Bootstrap Studio projects.
 
-### Krok 1: Dodaj pliki do projektu
+## Quick Start
 
-1. **Otwórz Bootstrap Studio**
-2. **Kliknij prawym na "assets" w drzewie projektu**
-3. **Wybierz "Import Files"** lub naciśnij `Ctrl+I`
+### Method 1: Import Files (Recommended)
 
-**Importuj:**
-- `simple-lightbox.css` → do folderu `assets/css/`
-- `simple-lightbox.js` → do folderu `assets/js/`
+1. **Add CSS File**
+   - Bootstrap Studio → **Design → Custom Code → CSS Files**
+   - Click **"+"** button
+   - Select: `2RS_Simple_Gallery.css`
+   - Import
 
-### Krok 2: Dodaj linki do plików
+2. **Add JavaScript File**
+   - Bootstrap Studio → **Design → Custom Code → JavaScript Files**
+   - Click **"+"** button
+   - Select: `2RS_Simple_Gallery.js`
+   - Import
 
-#### Metoda A: Globalnie (dla całej strony)
-
-1. Kliknij na `<html>` w drzewie komponentów
-2. W panelu po prawej: **Settings → HTML Settings**
-3. W sekcji **"Head HTML"** dodaj:
-
+3. **Use in HTML**
 ```html
-<link rel="stylesheet" href="assets/css/simple-lightbox.css">
-```
-
-4. W sekcji **"Body"** (na końcu) dodaj:
-
-```html
-<script src="assets/js/simple-lightbox.js"></script>
-```
-
-#### Metoda B: Na konkretnej stronie
-
-1. Kliknij na nazwę strony w drzewie (np. "index.html")
-2. **Page Settings → Head/Body**
-3. Dodaj powyższe linki
-
-### Krok 3: Zamień Fancybox na Simple Lightbox
-
-#### Znajdź linki typu:
-```html
-<a data-fancybox="gallery" href="obrazek.jpg">
-    <img src="miniaturka.jpg">
+<a href="image.jpg" data-lightbox="gallery" data-caption="Description">
+    <img src="thumb.jpg" alt="Description">
 </a>
 ```
 
-#### Zmień na:
-```html
-<a data-lightbox="gallery" href="obrazek.jpg" data-caption="Opis">
-    <img src="miniaturka.jpg">
-</a>
-```
-
-### Krok 4: Usuń Fancybox
-
-1. **Znajdź i usuń:**
-```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/.../fancybox.css">
-<script src="https://cdn.jsdelivr.net/.../fancybox.umd.js"></script>
-```
-
-2. **Usuń kod inicjalizacji Fancybox:**
-```javascript
-// USUŃ:
-Fancybox.show([...]);
-
-// LUB:
-document.querySelectorAll('.pdf-trigger').forEach(...)
-```
-
-### Krok 5: Test
-
-1. Naciśnij `F5` (Preview)
-2. Kliknij na obrazek
-3. Sprawdź:
-   - ✅ Obrazek się powiększa
-   - ✅ Strzałki ← → działają
-   - ✅ ESC zamyka lightbox
-   - ✅ Licznik pokazuje numer (1/10)
+Done! The gallery will work automatically.
 
 ---
 
-## 🎨 Dostosowanie do 2R Systems
+## Replacing Fancybox
 
-W Bootstrap Studio:
-1. **Design → Custom Code → CSS**
-2. Dodaj:
+If you're migrating from Fancybox:
+
+### Step 1: Find and Replace
+
+**OLD:**
+```html
+<a data-fancybox="gallery" href="image.jpg">
+```
+
+**NEW:**
+```html
+<a data-lightbox="gallery" href="image.jpg" data-caption="Image description">
+```
+
+### Step 2: Remove Fancybox Files
+
+1. Delete Fancybox CSS and JS from Custom Code
+2. Remove Fancybox CDN links from HTML Head
+
+```html
+<!-- REMOVE THESE -->
+<link rel="stylesheet" href=".../fancybox.css">
+<script src=".../fancybox.umd.js"></script>
+```
+
+---
+
+## Usage Examples
+
+### Product Gallery
+
+```html
+<div class="row">
+    <div class="col-md-4">
+        <a href="assets/img/product1.jpg" 
+           data-lightbox="products" 
+           data-caption="SlimLine 68 Window System">
+            <img src="assets/img/product1-thumb.jpg" class="img-fluid">
+        </a>
+    </div>
+</div>
+```
+
+### PDF Brochure Button
+
+```html
+<a href="brochure.pdf" 
+   data-lightbox="docs" 
+   data-type="pdf"
+   data-caption="Product Brochure 2024"
+   class="btn btn-primary">
+    <i class="fas fa-file-pdf"></i> View Brochure
+</a>
+```
+
+---
+
+## Testing
+
+1. Press **F5** in Bootstrap Studio
+2. Click on images/PDFs
+3. Test navigation (arrows, ESC)
+
+---
+
+## Customization
+
+### 2R Systems Colors
+
+Add to Custom CSS:
 
 ```css
-/* Kolory 2R Systems */
-.simple-lightbox-close,
-.simple-lightbox-prev,
-.simple-lightbox-next {
-    background: rgba(0, 102, 204, 0.2);
-    border-color: rgba(0, 102, 204, 0.5);
-}
-
-.simple-lightbox-caption,
-.simple-lightbox-counter {
+.simple-lightbox-caption {
     background: rgba(0, 102, 204, 0.8);
 }
 ```
 
 ---
 
-## ✅ Checklist
-
-- [ ] Zaimportowano `simple-lightbox.css`
-- [ ] Zaimportowano `simple-lightbox.js`
-- [ ] Dodano linki w HTML
-- [ ] Zamieniono `data-fancybox` → `data-lightbox`
-- [ ] Usunięto Fancybox CSS i JS
-- [ ] Przetestowano w Preview
-- [ ] Sprawdzono na mobile (F12 → Device mode)
-
----
-
-## 🆘 Problemy?
-
-### Lightbox się nie otwiera
-
-**Sprawdź:**
-1. Czy pliki są zaimportowane?
-2. Czy linki są poprawne?
-3. Console (F12) - czy są błędy?
-4. Czy atrybut to `data-lightbox` (nie `data-fancybox`)?
-
-### Obrazki nie pasują do rozdzielczości
-
-**Rozwiązanie:**
-Użyj responsive images:
-```html
-<a href="duzy-1920x1080.jpg" data-lightbox="gallery">
-    <img src="maly-300x200.jpg" class="img-fluid">
-</a>
-```
-
-### Licznik się nie pokazuje
-
-**Sprawdź:**
-Czy wszystkie obrazki w galerii mają ten sam `data-lightbox`:
-```html
-<!-- DOBRZE - ta sama galeria -->
-<a data-lightbox="gallery1" href="img1.jpg">...</a>
-<a data-lightbox="gallery1" href="img2.jpg">...</a>
-
-<!-- ŹLE - różne galerie -->
-<a data-lightbox="gallery1" href="img1.jpg">...</a>
-<a data-lightbox="gallery2" href="img2.jpg">...</a>
-```
-
----
-
-**Gotowe!** 🎉
-
-Teraz masz lekką, szybką galerię bez zewnętrznych zależności!
+For full documentation, see `README.md`

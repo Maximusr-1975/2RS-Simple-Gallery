@@ -19,8 +19,8 @@ A lightweight, dependency-free JavaScript image gallery with smooth animations a
 
 ```html
 <!-- Add files -->
-<link rel="stylesheet" href="simple-lightbox.css">
-<script src="simple-lightbox.js"></script>
+<link rel="stylesheet" href="2RS_Simple_Gallery.css">
+<script src="2RS_Simple_Gallery.js"></script>
 
 <!-- Use on images -->
 <a href="full-image.jpg" data-lightbox="gallery" data-caption="Description">
