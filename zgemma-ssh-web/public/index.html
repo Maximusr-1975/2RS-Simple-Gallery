@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZGemma H17 — SSH Terminal</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm@5.3.0/css/xterm.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #1a1a2e;
+            color: #e0e0e0;
+            font-family: 'Segoe UI', sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: #16213e;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid #0066cc;
+        }
+
+        header h1 {
+            font-size: 1.1rem;
+            color: #4da6ff;
+            font-weight: 600;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #555;
+            transition: background 0.3s;
+        }
+        .status-dot.connected { background: #00cc66; }
+        .status-dot.error { background: #cc3300; }
+
+        .connect-bar {
+            background: #16213e;
+            padding: 10px 20px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #333;
+        }
+
+        .connect-bar input {
+            background: #0f3460;
+            border: 1px solid #0066cc;
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            outline: none;
+        }
+        .connect-bar input:focus { border-color: #4da6ff; }
+        .connect-bar input[name="host"] { width: 140px; }
+        .connect-bar input[name="port"] { width: 60px; }
+        .connect-bar input[name="username"] { width: 100px; }
+        .connect-bar input[name="password"] { width: 100px; }
+
+        .connect-bar label {
+            font-size: 0.75rem;
+            color: #888;
+        }
+
+        button {
+            padding: 6px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+        #btnConnect {
+            background: #0066cc;
+            color: #fff;
+        }
+        #btnConnect:hover { background: #0055aa; }
+        #btnConnect.connecting { background: #555; cursor: not-allowed; }
+
+        #btnDisconnect {
+            background: #cc3300;
+            color: #fff;
+            display: none;
+        }
+        #btnDisconnect:hover { background: #aa2200; }
+
+        #terminal-wrap {
+            flex: 1;
+            padding: 8px;
+            overflow: hidden;
+        }
+
+        #terminal {
+            height: 100%;
+        }
+
+        .status-bar {
+            background: #0f0f1a;
+            padding: 4px 20px;
+            font-size: 0.75rem;
+            color: #888;
+            border-top: 1px solid #333;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="status-dot" id="statusDot"></div>
+    <h1>ZGemma H17 — SSH Web Terminal</h1>
+</header>
+
+<div class="connect-bar">
+    <label>Host</label>
+    <input name="host" id="host" value="192.168.1.18" placeholder="IP">
+    <label>Port</label>
+    <input name="port" id="port" value="22" placeholder="22">
+    <label>Użytkownik</label>
+    <input name="username" id="username" value="root" placeholder="root">
+    <label>Hasło</label>
+    <input name="password" id="password" type="password" value="root" placeholder="hasło">
+    <button id="btnConnect">Połącz</button>
+    <button id="btnDisconnect">Rozłącz</button>
+</div>
+
+<div id="terminal-wrap">
+    <div id="terminal"></div>
+</div>
+
+<div class="status-bar" id="statusBar">Gotowy do połączenia.</div>
+
+<script src="https://cdn.jsdelivr.net/npm/xterm@5.3.0/lib/xterm.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.8.0/lib/xterm-addon-fit.min.js"></script>
+<script>
+    const term = new Terminal({
+        theme: {
+            background: '#0d0d1a',
+            foreground: '#e0e0e0',
+            cursor: '#4da6ff',
+            selectionBackground: '#0066cc55'
+        },
+        fontSize: 14,
+        fontFamily: 'Consolas, "Courier New", monospace',
+        cursorBlink: true,
+        convertEol: true
+    });
+
+    const fitAddon = new FitAddon.FitAddon();
+    term.loadAddon(fitAddon);
+    term.open(document.getElementById('terminal'));
+    fitAddon.fit();
+
+    term.writeln('\x1b[1;34m╔══════════════════════════════════════╗\x1b[0m');
+    term.writeln('\x1b[1;34m║   ZGemma H17 — SSH Web Terminal      ║\x1b[0m');
+    term.writeln('\x1b[1;34m╚══════════════════════════════════════╝\x1b[0m');
+    term.writeln('Podaj dane i kliknij \x1b[1;33mPołącz\x1b[0m.\r\n');
+
+    let ws = null;
+    const dot = document.getElementById('statusDot');
+    const statusBar = document.getElementById('statusBar');
+    const btnConnect = document.getElementById('btnConnect');
+    const btnDisconnect = document.getElementById('btnDisconnect');
+
+    function setStatus(text, state) {
+        statusBar.textContent = text;
+        dot.className = 'status-dot ' + (state || '');
+    }
+
+    function connect() {
+        const host = document.getElementById('host').value.trim();
+        const port = parseInt(document.getElementById('port').value) || 22;
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+
+        if (!host || !username) {
+            setStatus('Podaj host i użytkownika.', 'error');
+            return;
+        }
+
+        btnConnect.textContent = 'Łączenie…';
+        btnConnect.className = 'connecting';
+        btnConnect.disabled = true;
+        setStatus('Łączenie z ' + host + '…', '');
+
+        ws = new WebSocket('ws://' + location.host);
+
+        ws.onopen = () => {
+            ws.send(JSON.stringify({
+                type: 'connect',
+                host, port, username, password,
+                cols: term.cols,
+                rows: term.rows
+            }));
+        };
+
+        ws.onmessage = (e) => {
+            const msg = JSON.parse(e.data);
+            if (msg.type === 'data') {
+                term.write(msg.text);
+            } else if (msg.type === 'status') {
+                setStatus(msg.text, 'connected');
+                btnConnect.style.display = 'none';
+                btnDisconnect.style.display = '';
+            } else if (msg.type === 'error') {
+                term.writeln('\r\n\x1b[1;31mBłąd: ' + msg.text + '\x1b[0m\r\n');
+                setStatus('Błąd: ' + msg.text, 'error');
+                resetButtons();
+            }
+        };
+
+        ws.onclose = () => {
+            setStatus('Połączenie zamknięte.', '');
+            resetButtons();
+        };
+
+        ws.onerror = () => {
+            setStatus('Błąd WebSocket.', 'error');
+            resetButtons();
+        };
+    }
+
+    function disconnect() {
+        if (ws) {
+            ws.send(JSON.stringify({ type: 'disconnect' }));
+            ws.close();
+        }
+        resetButtons();
+        setStatus('Rozłączono.', '');
+    }
+
+    function resetButtons() {
+        btnConnect.textContent = 'Połącz';
+        btnConnect.className = '';
+        btnConnect.disabled = false;
+        btnConnect.style.display = '';
+        btnDisconnect.style.display = 'none';
+    }
+
+    term.onData((data) => {
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({ type: 'data', text: data }));
+        }
+    });
+
+    window.addEventListener('resize', () => {
+        fitAddon.fit();
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({ type: 'resize', cols: term.cols, rows: term.rows }));
+        }
+    });
+
+    document.getElementById('btnConnect').addEventListener('click', connect);
+    document.getElementById('btnDisconnect').addEventListener('click', disconnect);
+
+    document.getElementById('password').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') connect();
+    });
+</script>
+</body>
+</html>
